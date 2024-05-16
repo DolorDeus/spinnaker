@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.app_name }}
+  labels:
+    test_app_name: {{ .Values.app_name }}
 spec:
   selector:
     matchLabels:
@@ -11,7 +13,6 @@ spec:
     metadata:
       labels:
         run: {{ .Values.app_name }}
-        test_app_name: {{ .Values.app_name }}
     spec:
       containers:
       - name: {{ .Values.app_name }}
