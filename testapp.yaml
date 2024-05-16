@@ -32,3 +32,4 @@ spec:
     protocol: TCP
   selector:
     run: {{ app_name }}
+
