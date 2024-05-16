@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ app_name }}
+  name: {{ .Values.app_name }}
   labels:
-    run: {{ app_name }}
+    run: {{ .Values.app_name }}
 spec:
   type: NodePort
   ports:
   - port: 8080
     protocol: TCP
   selector:
-    run: {{ app_name }}
+    run: {{ .Values.app_name }}

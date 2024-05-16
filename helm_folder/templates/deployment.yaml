@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ app_name }}
+  name: {{ .Values.app_name }}
 spec:
   selector:
     matchLabels:
-      run: {{ app_name }}
+      run: {{ .Values.app_name }}
   replicas: 2
   template:
     metadata:
       labels:
-        run: {{ app_name }}
+        run: {{ .Values.app_name }}
     spec:
       containers:
-      - name: {{ app_name }}
+      - name: {{ .Values.app_name }}
         image: lvthillo/python-flask-docker
         ports:
         - containerPort: 8080
