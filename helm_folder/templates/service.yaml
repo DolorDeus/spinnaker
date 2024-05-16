@@ -4,6 +4,7 @@ metadata:
   name: {{ .Values.app_name }}
   labels:
     run: {{ .Values.app_name }}
+    test_app_name: {{ .Values.app_name }}
 spec:
   type: NodePort
   ports:

@@ -11,6 +11,7 @@ spec:
     metadata:
       labels:
         run: {{ .Values.app_name }}
+        test_app_name: {{ .Values.app_name }}
     spec:
       containers:
       - name: {{ .Values.app_name }}
