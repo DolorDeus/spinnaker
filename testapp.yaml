@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-app
+  name: {{ app_name }}
 spec:
   selector:
     matchLabels:
-      run: my-app
+      run: {{ app_name }}
   replicas: 2
   template:
     metadata:
       labels:
-        run: my-app
+        run: {{ app_name }}
     spec:
       containers:
-      - name: my-app
+      - name: {{ app_name }}
         image: lvthillo/python-flask-docker
         ports:
         - containerPort: 8080
@@ -22,13 +22,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-app
+  name: {{ app_name }}
   labels:
-    run: my-app
+    run: {{ app_name }}
 spec:
   type: NodePort
   ports:
   - port: 8080
     protocol: TCP
   selector:
-    run: my-app
+    run: {{ app_name }}
