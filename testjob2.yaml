@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: push-to-s3
+spec:
+  template:
+    metadata:
+      name: push-to-s3
+    spec:
+      containers:
+        - name: push-to-s3
+          image: alpine
+          command:
+            - /bin/sh
+            - -c
+            - |
+              apk add ansible; apk add openssl; apk add curl; echo '{{ kek }}' > test.txt; ansible localhost -m template -a 'src=test.txt dest=test.txt' -e 'kek=123'
+              bucket=testbucketbrother
+              file=test.txt
+              S3_HOST=minio.spinnaker:9000
+              S3_KEY=myaccesskey
+              S3_SECRET=mysecretkey
+              host=${S3_HOST:-minio.example.com}
+              s3_key=${S3_KEY:-secret key}
+              s3_secret=${S3_SECRET:-secret token}
+              base_file=`basename ${file}`
+              resource="/${bucket}/${base_file}"
+              content_type="application/octet-stream"\
+              date=`date -R`
+              _signature="PUT\n\n${content_type}\n${date}\n${resource}"
+              signature=`echo -en ${_signature} | openssl sha1 -hmac ${s3_secret} -binary | base64`
+              cat test.txt
+              curl minio.spinnaker:9000
+              curl -v -X PUT -T "${file}" -H "Host: $host" -H "Date: ${date}" -H "Content-Type: ${content_type}" -H "Authorization: AWS ${s3_key}:${signature}" http://$host${resource}
+              cat test.txt
+      restartPolicy: Never
