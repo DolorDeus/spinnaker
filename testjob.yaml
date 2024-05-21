@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: check-pipeline
+spec:
+  template:
+    metadata:
+      name: check-pipeline
+    spec:
+      containers:
+        - command:
+            - '/bin/sh'
+            - '-c'
+            - >
+              SPINNAKER_CONFIG_JSON="{\"artifacts\":[{\"type\":\"embedded/base64\",\"name\":\"job_generated_artifact\",\"reference\":\"$(echo 'kek: 123' | base64 | tr -d \\n)\"}]}"; echo "SPINNAKER_CONFIG_JSON=${SPINNAKER_CONFIG_JSON}"
+          image: alpine
+          name: check-pipeline
+      restartPolicy: Never
