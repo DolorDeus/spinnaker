@@ -12,7 +12,9 @@ spec:
             - '/bin/sh'
             - '-c'
             - >
-              echo 'SPINNAKER_CONFIG_JSON={"test": 123}'
+              echo 'test: 123' > test.yaml
+              content=$(cat test.yaml | base64 | tr -d \\n)
+              echo "SPINNAKER_CONFIG_JSON={\"artifacts\": [{ \"type\":\"embedded/base64\",\"name\": \"job_generated_artifact\", \"reference\": \"${content}\"}]}"
           image: alpine
           name: check-pipeline
       restartPolicy: Never
