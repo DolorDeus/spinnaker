@@ -12,7 +12,7 @@ spec:
             - '/bin/sh'
             - '-c'
             - >
-              apk add ansible; touch test.yaml; echo 'kind: ConfigMap' > test.yaml; echo 'apiVersion: v1' >> test.yaml; echo 'metadata:' >> test.yaml; echo '  name: example-configmap' >> test.yaml; echo 'data:' >> test.yaml; echo '  database: ${ parameters.dbtype }' >> test.yaml; echo '  testans: {{ testkey }}' >> test.yaml; echo '${ parameters.jsonparams }' > test.json; ansible localhost -m template -a 'src=test.yaml dest=test.yaml' -e 'kek=123' -e @test.json; content=$(cat test.yaml | base64 | tr -d \\n); echo "SPINNAKER_CONFIG_JSON={\"artifacts\": [{\"type\":\"embedded/base64\", \"name\": \"job_generated_artifact\", \"reference\": \"${content}\"}]}"
+              apk add git; apk add ansible; git clone https://github.com/DolorDeus/spinnaker.git; touch test.yaml; echo 'kind: ConfigMap' > test.yaml; echo 'apiVersion: v1' >> test.yaml; echo 'metadata:' >> test.yaml; echo '  name: example-configmap' >> test.yaml; echo 'data:' >> test.yaml; echo '  database: ${ parameters.dbtype }' >> test.yaml; echo '  testansyaml: {{ yamltestkey }}' >> test.yaml; echo '  testansjson: {{ jsontestkey }}' >> test.yaml; ansible localhost -m template -a 'src=test.yaml dest=test.yaml' -e @values.json -e @values.yaml; content=$(cat test.yaml | base64 | tr -d \\n); echo "SPINNAKER_CONFIG_JSON={\"artifacts\": [{\"type\":\"embedded/base64\", \"name\": \"job_generated_artifact\", \"reference\": \"${content}\"}]}"
           image: alpine
           name: check-pipeline
       restartPolicy: Never
